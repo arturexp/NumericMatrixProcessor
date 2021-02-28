@@ -2,20 +2,48 @@
 Numeric Matrix Processor
 author: Arturexp
 """
-matrix1 = []
-matrix2 = []
-result = []
 
-a, b = map(int, input().split())
-for i in range(a):
-    matrix1.append(list(map(int, input().split())))
 
-c, d = map(int, input().split())
-for i in range(c):
-    matrix2.append(list(map(int, input().split())))
+class MatrixShapeError(Exception):
+    pass
 
-if a == c and b == d:
-    result = [[matrix1[i][j] + matrix2[i][j] for j in range(b)] for i in range(a)]
-    print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in result]))
-else:
-    print("ERROR")
+
+class Matrix:
+    def __init__(self, array):
+        self.matrix = array
+        self.rows = len(array)
+        self.columns = len(array[0])
+
+    @property
+    def shape(self):
+        return self.rows, self.columns
+
+    def __getitem__(self, item):
+        return self.matrix[item]
+
+    def __str__(self):
+        return "\n".join([" ".join(map(str, i)) for i in self.matrix])
+
+    def __repr__(self):
+        return '\n'.join(['\t'.join([str(cell) for cell in row]) for row in self.matrix])
+
+    def __add__(self, other):
+        try:
+            if self.shape != other.shape:
+                raise MatrixShapeError
+            else:
+                return Matrix([[self[i][j] + other[i][j] for j in range(self.columns)] for i in range(self.rows)])
+        except MatrixShapeError:
+            print("ERROR")
+            exit(0)
+
+
+def get_matrix_from_input():
+    a, b = map(int, input().split())
+    return [list(map(int, input().split())) for _ in range(a)]
+
+
+matrix1 = Matrix(get_matrix_from_input())
+matrix2 = Matrix(get_matrix_from_input())
+
+print(matrix1 + matrix2)
