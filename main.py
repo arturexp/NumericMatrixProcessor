@@ -32,6 +32,9 @@ class Matrix:
     def __repr__(self):
         return "\n".join([" ".join(map(str, i)) for i in self.matrix])
 
+    def __len__(self):
+        return self.rows
+
     def __add__(self, other):
         try:
             if self.shape != other.shape:
@@ -58,6 +61,23 @@ class Matrix:
         else:
             print("The operation cannot be performed.")
             exit(0)
+
+    def transpose_main(self):
+        return Matrix([[row[i] for row in self.matrix] for i in range(len(self.matrix))])
+
+    def transpose_side(self):
+        tmp = Matrix([[row[i] for row in self.matrix] for i in range(len(self.matrix))])
+        tmp = Matrix(tmp.transpose_horizontal())
+        tmp = Matrix(tmp.transpose_vertical())
+        return tmp
+
+    def transpose_vertical(self):
+        for i in self:
+            i.reverse()
+        return Matrix(self.matrix)
+
+    def transpose_horizontal(self):
+        return Matrix(self.matrix[::-1])
 
 
 def get_matrix_from_input(choice):
@@ -105,6 +125,21 @@ while True:
     elif user_choice == 4:
         print('\n1. Main diagonal\n2. Side diagonal\n3. Vertical line\n4. Horizontal line')
         choice = int(input("Your choice: "))
-        matrix = Matrix(get_matrix_from_input(user_choice))
+        if choice == 1:
+            matrix = Matrix(get_matrix_from_input(2))
+            print('The result is:')
+            print(matrix.transpose_main())
+        elif choice == 2:
+            matrix = Matrix(get_matrix_from_input(2))
+            print('The result is:')
+            print(matrix.transpose_side())
+        elif choice == 3:
+            matrix = Matrix(get_matrix_from_input(2))
+            print('The result is:')
+            print(matrix.transpose_vertical())
+        elif choice == 4:
+            matrix = Matrix(get_matrix_from_input(2))
+            print('The result is:')
+            print(matrix.transpose_horizontal())
     else:
         exit(0)
