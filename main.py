@@ -3,6 +3,8 @@ Numeric Matrix Processor
 author: Arturexp
 """
 
+user_choice = 0
+
 
 class MatrixShapeError(Exception):
     pass
@@ -58,11 +60,14 @@ class Matrix:
             exit(0)
 
 
-def get_matrix_from_input():
-    if Matrix.instances:
-        matrix1_exist = 'first'
+def get_matrix_from_input(choice):
+    if choice != 2:
+        if Matrix.instances :
+            matrix1_exist = 'first'
+        else:
+            matrix1_exist = 'second'
     else:
-        matrix1_exist = 'second'
+        matrix1_exist = ''
 
     a, b = map(int, input(f'Enter size of {matrix1_exist} matrix: ').split())
     print(f'Enter {matrix1_exist} matrix:')
@@ -73,7 +78,10 @@ def get_matrix_from_input():
 
 
 def constant_value():
-    return float(input())
+    try:
+        return int(input('Enter constant: '))
+    except ValueError:
+        return float(input('Enter constant: '))
 
 
 def menu():
@@ -82,10 +90,18 @@ def menu():
     return user_choice
 
 
-#menu()
-
-matrix1 = Matrix(get_matrix_from_input())
-matrix2 = Matrix(get_matrix_from_input())
-
-
-print(matrix1 * matrix2)
+while True:
+    user_choice = menu()
+    if user_choice == 1:
+        matrix1 = Matrix(get_matrix_from_input(user_choice))
+        matrix2 = Matrix(get_matrix_from_input(user_choice))
+        print(matrix1 + matrix2, '\n')
+    elif user_choice == 2:
+        matrix = Matrix(get_matrix_from_input(user_choice))
+        print(matrix * constant_value(), '\n')
+    elif user_choice == 3:
+        matrix1 = Matrix(get_matrix_from_input(user_choice))
+        matrix2 = Matrix(get_matrix_from_input(user_choice))
+        print(matrix1 + matrix2, '\n')
+    else:
+        exit(0)
