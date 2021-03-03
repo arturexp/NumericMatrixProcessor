@@ -2,6 +2,7 @@
 Numeric Matrix Processor
 author: Arturexp
 """
+import numpy as np
 
 user_choice = 0
 
@@ -79,6 +80,26 @@ class Matrix:
     def transpose_horizontal(self):
         return Matrix(self.matrix[::-1])
 
+    # def determinate(self, total=0):
+    #     indices = list(range(len(self)))
+    #
+    #     if len(self) == 2 and len(self[0]) == 2:
+    #         val = self[0][0] * self[1][1] - self[1][0] * self[0][1]
+    #         return val
+    #
+    #     for fc in indices:
+    #         submatrix = self[1:]
+    #         height = len(submatrix)
+    #
+    #         for i in range(height):
+    #             submatrix[i] = submatrix[i][0:fc] + submatrix[i][fc + 1:]
+    #
+    #         sign = (-1) ** (fc % 2)
+    #         sub_det = Matrix.determinate(submatrix)
+    #         total += sign * self[0][fc] * sub_det
+    #
+    #     return total
+
 
 def get_matrix_from_input(choice):
     if choice != 2:
@@ -102,7 +123,7 @@ def constant_value():
 
 
 def menu():
-    print("""1. Add matrices\n2. Multiply matrix by a constant\n3. Multiply matrices\n4. Transpose matrix\n0. Exit""")
+    print("""1. Add matrices\n2. Multiply matrix by a constant\n3. Multiply matrices\n4. Transpose matrix\n5. Calculate a determinant\n6. Inverse matrix\n0. Exit""")
     user_choice = int(input("Your choice: "))
     return user_choice
 
@@ -141,5 +162,13 @@ while True:
             matrix = Matrix(get_matrix_from_input(2))
             print('The result is:')
             print(matrix.transpose_horizontal())
+    elif user_choice == 5:
+        matrix = Matrix(get_matrix_from_input(2))
+        print('The result is:')
+        print(np.linalg.det(matrix))
+    elif user_choice == 6:
+        matrix = Matrix(get_matrix_from_input(2))
+        print('The result is:')
+        print(Matrix(np.linalg.inv(matrix)))
     else:
         exit(0)
